@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Подслушано 23 Школа | Защищенный портал</title>
+    
+    <!-- ИКОНКА ВКЛАДКИ (ОЛЕНЬ) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='white' rx='15'/><path d='M35 35 L30 20 M30 20 L25 15 M30 20 L22 25 M65 35 L70 20 M70 20 L75 15 M70 20 L78 25' stroke='%234a2a10' stroke-width='5' stroke-linecap='round' fill='none'/><ellipse cx='50' cy='60' rx='25' ry='30' fill='%23c68b4f' stroke='%234a2a10' stroke-width='3'/><circle cx='40' cy='55' r='8' fill='white' stroke='%234a2a10' stroke-width='2'/><circle cx='60' cy='55' r='8' fill='white' stroke='%234a2a10' stroke-width='2'/><circle cx='41' cy='57' r='3' fill='black'/><circle cx='59' cy='57' r='3' fill='black'/><ellipse cx='38' cy='75' rx='6' ry='7' fill='%235a3a1a'/><ellipse cx='62' cy='75' rx='6' ry='7' fill='%235a3a1a'/><ellipse cx='20' cy='55' rx='8' ry='5' fill='%23d49458' stroke='%234a2a10' stroke-width='2'/><ellipse cx='80' cy='55' rx='8' ry='5' fill='%23d49458' stroke='%234a2a10' stroke-width='2'/></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0b0f19;
+            --bg-surface: #151c2c;
+            --bg-glass: rgba(21, 28, 44, 0.7);
+            --primary: #fbbf24;
+            --primary-hover: #f59e0b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #2e3a52;
+            --danger: #ef4444;
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(251, 191, 36, 0.05), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(251, 191, 36, 0.03), transparent 25%);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-main); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+        /* Шапка */
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(180deg, rgba(21, 28, 44, 0.8) 0%, transparent 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+
+        /* Контейнер для оленя */
+        .logo-container {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            background: #ffffff;
+            box-shadow: 0 0 30px rgba(251, 191, 36, 0.35), 0 0 0 4px rgba(251, 191, 36, 0.15);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            overflow: hidden;
+        }
+
+        .logo-container:hover { transform: scale(1.05) rotate(5deg); }
+
+        .logo-container svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            letter-spacing: 1px;
+            color: var(--text-main);
+            margin-bottom: 5px;
+        }
+
+        h1 span { color: var(--primary); }
+
+        .subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Навигация */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .tab-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 12px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            transition: var(--transition);
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--primary);
+            color: var(--bg-main);
+            border-color: var(--primary);
+            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+        }
+
+        /* Контент */
+        main {
+            flex: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 0 20px 40px;
+        }
+
+        .tab-content {
+            display: none;
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: var(--radius);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            background: rgba(11, 15, 25, 0.6);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            border-radius: 12px;
+            outline: none;
+            font-size: 15px;
+            transition: var(--transition);
+            user-select: text;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 140px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+            color: var(--bg-main);
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4);
+        }
+
+        /* Чат */
+        #chatMessages {
+            height: 400px;
+            overflow-y: auto;
+            background: rgba(11, 15, 25, 0.4);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .chat-msg {
+            background: var(--bg-surface);
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-size: 14px;
+            border-left: 3px solid var(--primary);
+            animation: fadeIn 0.3s ease;
+            max-width: 85%;
+            align-self: flex-start;
+        }
+
+        .chat-msg strong {
+            display: block;
+            color: var(--primary);
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .chat-msg span { user-select: text; color: #e2e8f0; }
+
+        /* Подвал */
+        footer {
+            text-align: center;
+            padding: 30px;
+            font-size: 12px;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            background: var(--bg-main);
+        }
+
+        .hidden-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            font-size: 11px;
+            margin: 0 5px;
+            transition: var(--transition);
+        }
+
+        .hidden-btn:hover { color: var(--primary); }
+
+        /* Модальные окна */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            background: var(--bg-surface);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid var(--border);
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .modal-content p {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+
+        #adminModal .modal-content {
+            max-width: 900px;
+            text-align: left;
+            padding: 30px;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
+        }
+
+        .admin-tab {
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+
+        .admin-tab.active { color: var(--primary); border-bottom: 2px solid var(--primary); }
+
+        .admin-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .admin-item {
+            background: var(--bg-main);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .admin-item-info { flex: 1; }
+        .admin-item-header { font-size: 12px; color: var(--text-muted); margin-bottom: 5px; display: flex; justify-content: space-between;}
+        .admin-item-text { font-size: 14px; color: var(--text-main); user-select: text; }
+        
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 16px;
+        }
+
+        .btn-delete:hover { background: var(--danger); color: white; }
+
+        .admin-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn-danger-outline {
+            background: transparent;
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .btn-danger-outline:hover { background: var(--danger); color: white; }
+
+        .gold-fire {
+            border: 2px solid transparent !important;
+            background-image: linear-gradient(rgba(11, 15, 25, 0.9), rgba(11, 15, 25, 0.9)), linear-gradient(45deg, #ff0000, #ff8c00, #ffd700, #ff8c00, #ff0000);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            box-shadow: 0 0 15px rgba(255, 140, 0, 0.6), inset 0 0 10px rgba(255, 215, 0, 0.2);
+            animation: fireGlow 1.5s infinite alternate;
+        }
+
+        .gold-fire-btn {
+            background: linear-gradient(45deg, #ff0000, #ff8c00, #ffd700) !important;
+            color: #fff !important;
+            box-shadow: 0 0 20px rgba(255, 140, 0, 0.8);
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+
+        @keyframes fireGlow {
+            from { box-shadow: 0 0 5px #ff8c00; }
+            to { box-shadow: 0 0 25px #ffd700; }
+        }
+
+        .emoji-rain {
+            position: fixed;
+            top: -50px;
+            font-size: 30px;
+            z-index: 9999;
+            animation: fall linear forwards;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(105vh) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Шапка -->
+    <header>
+        <!-- Олень на самом сайте -->
+        <div class="logo-container" id="logo" title="Секрет... (двойной клик)">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <path d="M75 68 L68 48 L58 28 M68 48 L48 38 M68 48 L58 18 M68 48 L78 30" stroke="#4a2a10" stroke-width="7" stroke-linecap="round" fill="none"/>
+                <path d="M125 68 L132 48 L142 28 M132 48 L152 38 M132 48 L142 18 M132 48 L122 30" stroke="#4a2a10" stroke-width="7" stroke-linecap="round" fill="none"/>
+                <ellipse cx="42" cy="108" rx="20" ry="13" fill="#d49458" stroke="#4a2a10" stroke-width="3"/>
+                <ellipse cx="158" cy="108" rx="20" ry="13" fill="#d49458" stroke="#4a2a10" stroke-width="3"/>
+                <path d="M100 72 C 58 72, 46 122, 52 152 C 58 182, 142 182, 148 152 C 154 122, 142 72, 100 72 Z" fill="#c68b4f" stroke="#4a2a10" stroke-width="3"/>
+                <path d="M64 90 Q100 80 136 90" stroke="#8a5a2a" stroke-width="5" stroke-linecap="round" fill="none"/>
+                <circle cx="82" cy="110" r="15" fill="white" stroke="#4a2a10" stroke-width="3"/>
+                <circle cx="118" cy="110" r="15" fill="white" stroke="#4a2a10" stroke-width="3"/>
+                <circle cx="84" cy="113" r="6" fill="#1a1a1a"/>
+                <circle cx="116" cy="113" r="6" fill="#1a1a1a"/>
+                <ellipse cx="73" cy="147" rx="15" ry="17" fill="#5a3a1a"/>
+                <ellipse cx="127" cy="147" rx="15" ry="17" fill="#5a3a1a"/>
+                <path d="M88 165 Q100 172 112 165" stroke="#4a2a10" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <rect x="86" y="168" width="9" height="13" fill="white" stroke="#4a2a10" stroke-width="2" rx="1"/>
+                <rect x="95.5" y="168" width="9" height="13" fill="white" stroke="#4a2a10" stroke-width="2" rx="1"/>
+                <rect x="105" y="168" width="9" height="13" fill="white" stroke="#4a2a10" stroke-width="2" rx="1"/>
+            </svg>
+        </div>
+        <h1><span>Подслушано</span> 23 Школа</h1>
+        <div class="subtitle">Официальный анонимный портал</div>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-target="confessions">Признания</button>
+        <button class="tab-btn" data-target="chat">Публичный чат</button>
+    </div>
+
+    <main>
+        <div id="confessions" class="tab-content active">
+            <form id="confessionForm">
+                <input type="text" id="confessionName" placeholder="Ваше имя (или оставьте пустым)" maxlength="20">
+                <textarea id="confessionText" placeholder="Напишите ваше признание... Оно уйдет напрямую администрации школы." required maxlength="1000"></textarea>
+                <button type="submit" id="confessionSubmitBtn">Отправить анонимно</button>
+            </form>
+        </div>
+
+        <div id="chat" class="tab-content">
+            <div id="chatMessages"></div>
+            <form id="chatForm">
+                <input type="text" id="chatName" placeholder="Ваше имя" maxlength="20">
+                <input type="text" id="chatText" placeholder="Ваше сообщение..." required maxlength="200">
+                <button type="submit">Отправить в чат</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2024 Школьная сеть «Подслушано 23». Все права защищены.</p>
+        <p style="margin-top: 5px; opacity: 0.5;">Secure Server: podslushanoshkoloy23 | Status: Online</p>
+        <div style="margin-top: 15px;">
+            <button class="hidden-btn" id="btnAdmin">Управление сервисом</button>
+            <button class="hidden-btn" id="btnSecurity">Безопасность</button>
+        </div>
+    </footer>
+
+    <div class="modal" id="rulesModal">
+        <div class="modal-content">
+            <h2>Добро пожаловать!</h2>
+            <p>Это анонимный портал школы №23. Здесь вы можете делиться признаниями и общаться в чате. <br><br><b>Правила:</b> Запрещены оскорбления, травля и разглашение личных данных. За нарушение — блокировка.<br><br>Нажимая кнопку ниже, вы соглашаетесь с правилами анонимности и сервиса.</p>
+            <button type="button" onclick="acceptRules()">Я согласен(на)</button>
+        </div>
+    </div>
+
+    <div class="modal" id="adminModal">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0; font-size: 24px;">Панель управления</h2>
+                <button type="button" onclick="closeAdminPanel()" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 24px;">✕</button>
+            </div>
+            
+            <div class="admin-tabs">
+                <button class="admin-tab active" onclick="switchAdminTab('conf')">Признания</button>
+                <button class="admin-tab" onclick="switchAdminTab('chat')">Чат</button>
+            </div>
+
+            <div id="adminListConf" class="admin-list">
+                <p style="color: var(--text-muted);">Загрузка данных...</p>
+            </div>
+            
+            <div id="adminListChat" class="admin-list" style="display: none;">
+                <p style="color: var(--text-muted);">Загрузка данных...</p>
+            </div>
+
+            <div class="admin-actions">
+                <button type="button" class="btn-danger-outline" id="btnClearAll" onclick="clearAllData()">Очистить все признания</button>
+                <button type="button" onclick="logoutAdmin()" style="background: var(--border); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">Выйти</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, push, onChildAdded, onValue, serverTimestamp, remove, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAeenE8Grs9MIVqzN2o7lpP4I6axIpdAHk",
+            authDomain: "podslushanoshkoloy23.firebaseapp.com",
+            databaseURL: "https://podslushanoshkoloy23-default-rtdb.firebaseio.com",
+            projectId: "podslushanoshkoloy23",
+            storageBucket: "podslushanoshkoloy23.firebasestorage.app",
+            messagingSenderId: "323327994212",
+            appId: "1:323327994212:web:c7340f118f17cf49887271",
+            measurementId: "G-Y7MG6ET5SE"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const ADMIN_PASSWORD = "qwefgh101@!";
+        const DEV_PASSWORD = "ewqhgf101!@";
+        let isDevMode = false;
+        let currentAdminTab = 'conf';
+
+        window.acceptRules = function() {
+            localStorage.setItem('rulesAccepted', 'true');
+            document.getElementById('rulesModal').style.display = 'none';
+        };
+
+        if (localStorage.getItem('rulesAccepted') !== 'true') {
+            document.getElementById('rulesModal').style.display = 'flex';
+        }
+
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(btn.dataset.target).classList.add('active');
+            });
+        });
+
+        const nameInputs = [document.getElementById('confessionName'), document.getElementById('chatName')];
+        const secretPlaceholder = "П о д с л у ш а н о  2 3";
+
+        nameInputs.forEach(input => {
+            let typingInterval;
+            let eraseInterval;
+            const originalPlaceholder = input.placeholder;
+
+            input.addEventListener('mouseenter', () => {
+                clearInterval(eraseInterval);
+                let i = 0;
+                input.placeholder = '';
+                typingInterval = setInterval(() => {
+                    input.placeholder += secretPlaceholder[i];
+                    i++;
+                    if (i >= secretPlaceholder.length) clearInterval(typingInterval);
+                }, 50);
+            });
+
+            input.addEventListener('mouseleave', () => {
+                clearInterval(typingInterval);
+                let i = secretPlaceholder.length;
+                eraseInterval = setInterval(() => {
+                    input.placeholder = input.placeholder.slice(0, -1);
+                    i--;
+                    if (i <= 0) {
+                        clearInterval(eraseInterval);
+                        input.placeholder = originalPlaceholder;
+                    }
+                }, 20);
+            });
+        });
+
+        const logo = document.getElementById('logo');
+        logo.addEventListener('dblclick', () => {
+            const emojis = ['📚', '🎒', '🍎', '✏️', '🏫', '🔔', '📝', '🎓'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const el = document.createElement('div');
+                    el.className = 'emoji-rain';
+                    el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                    el.style.left = Math.random() * 100 + 'vw';
+                    el.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    document.body.appendChild(el);
+                    setTimeout(() => el.remove(), 4000);
+                }, i * 40);
+            }
+        });
+
+        const secretWords = ['директор', 'завуч', 'учитель'];
+        const confNameInput = document.getElementById('confessionName');
+        const confSubmitBtn = document.getElementById('confessionSubmitBtn');
+
+        confNameInput.addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase().trim();
+            if (secretWords.includes(val)) {
+                confNameInput.classList.add('gold-fire');
+                confSubmitBtn.classList.add('gold-fire-btn');
+            } else {
+                confNameInput.classList.remove('gold-fire');
+                confSubmitBtn.classList.remove('gold-fire-btn');
+            }
+        });
+
+        document.addEventListener('contextmenu', e => {
+            if (!isDevMode) e.preventDefault();
+        });
+
+        document.addEventListener('keydown', e => {
+            if (isDevMode) return;
+            if (e.key === 'F12' || 
+                (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key)) || 
+                (e.ctrlKey && e.key === 'U')) {
+                e.preventDefault();
+                alert('Доступ к коду ограничен администрацией школы.');
+            }
+            if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+                const pass = prompt('Введите пароль разработчика:');
+                if (pass === DEV_PASSWORD) {
+                    isDevMode = true;
+                    alert('Режим разработчика активирован. Защита снята.');
+                }
+            }
+        });
+
+        document.getElementById('confessionForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = confNameInput.value.trim() || 'Аноним';
+            const text = document.getElementById('confessionText').value.trim();
+
+            push(ref(db, 'confessions'), {
+                name: name,
+                text: text,
+                timestamp: Date.now()
+            }).then(() => {
+                alert('Ваше признание успешно отправлено!');
+                document.getElementById('confessionText').value = '';
+                confNameInput.value = '';
+                confNameInput.classList.remove('gold-fire');
+                confSubmitBtn.classList.remove('gold-fire-btn');
+            }).catch(err => alert('Ошибка: ' + err.message));
+        });
+
+        const chatRef = ref(db, 'chats');
+        const chatMessages = document.getElementById('chatMessages');
+
+        onChildAdded(chatRef, (snapshot) => {
+            const data = snapshot.val();
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'chat-msg';
+            
+            const nameSpan = document.createElement('strong');
+            nameSpan.textContent = data.name;
+            
+            const textSpan = document.createElement('span');
+            textSpan.textContent = data.text;
+            
+            msgDiv.appendChild(nameSpan);
+            msgDiv.appendChild(textSpan);
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
+
+        document.getElementById('chatForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('chatName').value.trim() || 'Аноним';
+            const text = document.getElementById('chatText').value.trim();
+
+            push(chatRef, {
+                name: name,
+                text: text,
+                timestamp: serverTimestamp()
+            }).then(() => {
+                document.getElementById('chatText').value = '';
+            });
+        });
+
+        const adminModal = document.getElementById('adminModal');
+        
+        document.getElementById('btnAdmin').addEventListener('click', () => {
+            if (localStorage.getItem('adminLoggedIn') === 'true') {
+                openAdminPanel();
+            } else {
+                const pass = prompt('Введите пароль администратора:');
+                if (pass === ADMIN_PASSWORD) {
+                    localStorage.setItem('adminLoggedIn', 'true');
+                    openAdminPanel();
+                } else {
+                    alert('Неверный пароль!');
+                }
+            }
+        });
+
+        function openAdminPanel() {
+            adminModal.style.display = 'flex';
+            loadAdminData('conf');
+        }
+
+        window.closeAdminPanel = function() {
+            adminModal.style.display = 'none';
+        };
+
+        window.logoutAdmin = function() {
+            localStorage.removeItem('adminLoggedIn');
+            closeAdminPanel();
+        };
+
+        window.switchAdminTab = function(tab) {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            currentAdminTab = tab;
+            
+            document.getElementById('adminListConf').style.display = tab === 'conf' ? 'flex' : 'none';
+            document.getElementById('adminListChat').style.display = tab === 'chat' ? 'flex' : 'none';
+            document.getElementById('btnClearAll').innerText = tab === 'conf' ? 'Очистить все признания' : 'Очистить весь чат';
+            
+            loadAdminData(tab);
+        }
+
+        function loadAdminData(type) {
+            const listContainer = type === 'conf' ? document.getElementById('adminListConf') : document.getElementById('adminListChat');
+            const dbPath = type === 'conf' ? 'confessions' : 'chats';
+            
+            listContainer.innerHTML = '<p style="color: var(--text-muted);">Загрузка...</p>';
+
+            onValue(ref(db, dbPath), (snapshot) => {
+                listContainer.innerHTML = '';
+                const data = snapshot.val();
+                
+                if (!data) {
+                    listContainer.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px;">Нет сообщений.</p>';
+                    return;
+                }
+                
+                const items = Object.entries(data).sort((a, b) => (b[1].timestamp || 0) - (a[1].timestamp || 0));
+                
+                items.forEach(([key, val]) => {
+                    const div = document.createElement('div');
+                    div.className = 'admin-item';
+                    
+                    const date = val.timestamp ? new Date(val.timestamp).toLocaleString('ru-RU') : 'Только что';
+                    
+                    const infoDiv = document.createElement('div');
+                    infoDiv.className = 'admin-item-info';
+                    infoDiv.innerHTML = `
+                        <div class="admin-item-header">
+                            <span><b>${val.name || 'Аноним'}</b></span>
+                            <span>${date}</span>
+                        </div>
+                        <div class="admin-item-text"></div>
+                    `;
+                    infoDiv.querySelector('.admin-item-text').textContent = val.text;
+                    
+                    const delBtn = document.createElement('button');
+                    delBtn.className = 'btn-delete';
+                    delBtn.innerHTML = '🗑️';
+                    delBtn.title = 'Удалить сообщение';
+                    delBtn.onclick = () => deleteItem(dbPath, key);
+
+                    div.appendChild(infoDiv);
+                    div.appendChild(delBtn);
+                    listContainer.appendChild(div);
+                });
+            });
+        }
+
+        window.deleteItem = function(path, key) {
+            if (confirm('Вы уверены, что хотите безвозвратно удалить это сообщение?')) {
+                remove(ref(db, `${path}/${key}`))
+                    .then(() => console.log('Удалено'))
+                    .catch(err => alert('Ошибка удаления: ' + err.message));
+            }
+        }
+
+        window.clearAllData = function() {
+            const path = currentAdminTab === 'conf' ? 'confessions' : 'chats';
+            const label = currentAdminTab === 'conf' ? 'ВСЕ ПРИЗНАНИЯ' : 'ВЕСЬ ЧАТ';
+            
+            if (confirm(`ВНИМАНИЕ! Вы собираетесь полностью удалить ${label}. Это действие необратимо. Продолжить?`)) {
+                set(ref(db, path), null)
+                    .then(() => alert('База данных успешно очищена.'))
+                    .catch(err => alert('Ошибка очистки: ' + err.message));
+            }
+        }
+
+        document.getElementById('btnSecurity').addEventListener('click', () => {
+            alert('🛡️ Система безопасности активна.\nЗащита от копирования, ПКМ и DevTools включена.\nШифрование Firebase: AES-256.');
+        });
+
+    </script>
+</body>
+</html>
